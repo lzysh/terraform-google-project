@@ -1,0 +1,32 @@
+driver:
+  name: terraform
+  variables:
+    billing_id: <%= ENV['BILLING_ID'] %>
+
+provisioner:
+  name: terraform
+
+verifier:
+  name: terraform
+
+platforms:
+  - name: gcp
+
+suites:
+  - name: default-project
+    driver:
+      root_module_directory: test/fixtures/default-project
+    verifier:
+      color: true
+      systems:
+        - name: inspec-gcp-cis-benchmark
+          backend: gcp
+          attrs_outputs:
+            gcp_project_id: project_id
+          controls:
+            - cis-gcp-3.1-networking
+            - cis-gcp-4.4-vms
+        - name: inspec-gcp
+          backend: gcp
+          controls:
+            - google-compute-project-info
