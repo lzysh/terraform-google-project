@@ -31,17 +31,3 @@ project IDs. The reason we do this is because project IDs are gloabally unique a
 when you delete a project it goes into a pending deletion state for 30 days where
 you can't reuse the project ID. If you want to exclude this from your project name
 you can use the variable: random_project_id = false
-
-## Module Testing
-
-Create or update local.tfvars file and populate the required variables, then run the following commands:
-
-`terraform init` to initialize a working directory containing Terraform configuration files
-
-`terraform validate` to validate the configuration files in a directory
-
-`terraform plan -out="plan.out" -var-file="local.tfvars"` to create an execution plan
-
-`terraform apply plan.out` to apply the changes required to reach the desired state
-
-`terraform destroy -var-file="local.tfvars"` to destroy the the Terraform-managed infrastructure
