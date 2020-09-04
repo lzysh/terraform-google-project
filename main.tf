@@ -4,7 +4,7 @@ locals {
     "%s-%s-%s-%s",
     var.prefix,
     var.system,
-    random_id.random[0].hex,
+    random_id.this[0].hex,
     var.env,
   ) : local.base_project_id
 }
@@ -12,8 +12,8 @@ locals {
 # Random ID Resource
 # https://www.terraform.io/docs/providers/random/r/id.html
 
-resource "random_id" "random" {
-  count = var.random_project_id ? 1 : 0
+resource "random_id" "this" {
+  count       = var.random_project_id ? 1 : 0
   prefix      = "tf"
   byte_length = "3"
 }
@@ -21,7 +21,7 @@ resource "random_id" "random" {
 # Project Resource
 # https://www.terraform.io/docs/providers/google/r/google_project.html
 
-resource "google_project" "project" {
+resource "google_project" "this" {
   name                = local.project_id
   project_id          = local.project_id
   billing_account     = var.billing_id
@@ -35,7 +35,7 @@ resource "google_project" "project" {
 # Project Metadata Resource
 # https://www.terraform.io/docs/providers/google/r/compute_project_metadata.html
 
-resource "google_compute_project_metadata" "metadata" {
+resource "google_compute_project_metadata" "this" {
   project = google_project.project.project_id
   metadata = {
     enable-oslogin = true
