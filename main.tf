@@ -36,7 +36,7 @@ resource "google_project" "this" {
 # https://www.terraform.io/docs/providers/google/r/compute_project_metadata.html
 
 resource "google_compute_project_metadata" "this" {
-  project = google_project.project.project_id
+  project = google_project.this.project_id
   metadata = {
     enable-oslogin = true
   }
