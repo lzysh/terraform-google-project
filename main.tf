@@ -41,3 +41,23 @@ resource "google_compute_project_metadata" "this" {
     enable-oslogin = true
   }
 }
+
+# Project Logging Sink
+# https://www.terraform.io/docs/providers/google/r/logging_project_sink.html
+
+resource "google_logging_project_sink" "cis_gcp_2_2_logging" {
+  name        = "cis-gcp-2.2-logging-sink"
+  project     = google_project.this.project_id
+  destination = "storage.googleapis.com/${var.cis_gcp_2_2_logging_bucket}"
+
+  unique_writer_identity = true
+}
+
+resource "google_project_iam_binding" "cis_gcp_2_2_log_writer" {
+  project = var.cis_gcp_2_2_logging_project
+  role    = "roles/storage.objectCreator"
+
+  members = [
+    google_logging_project_sink.cis_gcp_2_2_logging.writer_identity,
+  ]
+}
