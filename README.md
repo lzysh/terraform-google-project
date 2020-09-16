@@ -30,4 +30,4 @@ test-tools-tf6310f3-sb
 project IDs. The reason we do this is because project IDs are gloabally unique also
 when you delete a project it goes into a pending deletion state for 30 days where
 you can't reuse the project ID. If you want to exclude this from your project name
-you can use the variable: random_project_id = false
+you can use the variable: `random_project_id = false`
