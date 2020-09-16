@@ -17,13 +17,14 @@ suites:
     driver:
       root_module_directory: test/fixtures/default-project
     verifier:
-      color: true
+      color: false
       systems:
         - name: inspec-gcp-cis-benchmark
           backend: gcp
           attrs_outputs:
             gcp_project_id: project_id
           controls:
+            - cis-gcp-2.2-logging
             - cis-gcp-3.1-networking
             - cis-gcp-4.4-vms
         - name: inspec-gcp
