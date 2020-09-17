@@ -24,6 +24,9 @@ suites:
           attrs_outputs:
             gcp_project_id: project_id
           controls:
+            - cis-gcp-1.1-iam
+            - cis-gcp-1.5-iam
+            - cis-gcp-1.6-iam
             - cis-gcp-2.2-logging
             - cis-gcp-3.1-networking
             - cis-gcp-4.4-vms
