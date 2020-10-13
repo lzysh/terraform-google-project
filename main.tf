@@ -42,19 +42,27 @@ resource "google_compute_project_metadata" "this" {
   }
 }
 
+# Storage Bucket Resource
+# https://www.terraform.io/docs/providers/google/r/storage_bucket.html
+
+resource "google_storage_bucket" "cis_gcp_2_2" {
+  name    = "${google_project.this.project_id}-cis-gcp-2-2-logging-sink"
+  project = google_project.this.project_id
+}
+
 # Project Logging Sink
 # https://www.terraform.io/docs/providers/google/r/logging_project_sink.html
 
 resource "google_logging_project_sink" "cis_gcp_2_2_logging" {
   name        = "cis-gcp-2.2-logging-sink"
   project     = google_project.this.project_id
-  destination = "storage.googleapis.com/${var.cis_gcp_2_2_logging_bucket}"
+  destination = "storage.googleapis.com/${google_storage_bucket.cis_gcp_2_2.name}"
 
   unique_writer_identity = true
 }
 
 resource "google_project_iam_binding" "cis_gcp_2_2_log_writer" {
-  project = var.cis_gcp_2_2_logging_project
+  project = google_project.this.project_id
   role    = "roles/storage.objectCreator"
 
   members = [

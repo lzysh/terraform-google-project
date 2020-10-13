@@ -3,18 +3,6 @@ variable "billing_id" {
   type        = string
 }
 
-variable "cis_gcp_2_2_logging_bucket" {
-  description = "Name of bucket for cis-gcp-2.2-logging all log entries"
-  type        = string
-  default     = ""
-}
-
-variable "cis_gcp_2_2_logging_project" {
-  description = "Name of project for cis-gcp-2.2-logging all log entries bucket"
-  type        = string
-  default     = ""
-}
-
 variable "cost_center" {
   description = "Cost center to label the project."
   type        = string
