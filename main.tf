@@ -33,6 +33,18 @@ resource "google_project" "this" {
   }
 }
 
+# Project Service Resource
+# https://www.terraform.io/docs/providers/google/r/google_project_service.html
+
+resource "google_project_service" "this" {
+  count = length(var.services)
+
+  project = google_project.this.project_id
+  service = element(var.services, count.index)
+
+  disable_on_destroy = false
+}
+
 # Project Metadata Resource
 # https://www.terraform.io/docs/providers/google/r/compute_project_metadata.html
 
@@ -44,18 +56,50 @@ resource "google_compute_project_metadata" "this" {
   }
 }
 
+# KeyRing Resource
+# https://www.terraform.io/docs/providers/google/r/kms_key_ring.html
+
+resource "google_kms_key_ring" "this" {
+  name     = "default-keyring"
+  project  = google_project.this.project_id
+  location = "us-east4"
+
+  depends_on = [google_project_service.this]
+}
+
+# KMS CryptoKey Resource
+# https://www.terraform.io/docs/providers/google/r/kms_crypto_key.html
+
+resource "google_kms_crypto_key" "cis_gcp_2_2" {
+  name            = "cis-gcp-2-2-key-logging-sink"
+  key_ring        = google_kms_key_ring.this.id
+  rotation_period = "100000s"
+}
+
+# KMS Crypto Key IAM Policy Resource
+# https://www.terraform.io/docs/providers/google/r/google_kms_crypto_key_iam.html
+
+resource "google_kms_crypto_key_iam_member" "cis_gcp_2_2" {
+  crypto_key_id = google_kms_crypto_key.cis_gcp_2_2.id
+  role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+  member        = "serviceAccount:service-${google_project.this.number}@gs-project-accounts.iam.gserviceaccount.com"
+}
+
 # Storage Bucket Resource
 # https://www.terraform.io/docs/providers/google/r/storage_bucket.html
 
 resource "google_storage_bucket" "cis_gcp_2_2" {
-  name    = "${google_project.this.project_id}-cis-gcp-2-2-logging-sink"
-  project = google_project.this.project_id
+  name                        = "${google_project.this.project_id}-cis-gcp-2-2-logging-sink"
+  project                     = google_project.this.project_id
+  uniform_bucket_level_access = true
+  location                    = "us-east4"
+
   encryption {
-    default_kms_key_name = true
+    default_kms_key_name = google_kms_crypto_key.cis_gcp_2_2.id
   }
 }
 
-# Project Logging Sink
+# Project Logging Sink Resource
 # https://www.terraform.io/docs/providers/google/r/logging_project_sink.html
 
 resource "google_logging_project_sink" "cis_gcp_2_2_logging" {

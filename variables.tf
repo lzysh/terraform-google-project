@@ -32,6 +32,15 @@ variable "random_project_id" {
   default     = true
 }
 
+variable "services" {
+  description = "The service to enable"
+  type        = list(string)
+
+  default = [
+    "cloudkms.googleapis.com",
+  ]
+}
+
 variable "system" {
   description = "This should be a short name representing the system or part of the system you're building in the project for example: tools (for a set of tooling resources)."
   type        = string
