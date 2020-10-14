@@ -50,9 +50,7 @@ resource "google_compute_project_metadata" "this" {
 resource "google_storage_bucket" "cis_gcp_2_2" {
   name    = "${google_project.this.project_id}-cis-gcp-2-2-logging-sink"
   project = google_project.this.project_id
-  uniform_bucket_level_access {
-    bucket_policy_only = true
-  }
+  uniform_bucket_level_access = true
 }
 
 # Project Logging Sink
