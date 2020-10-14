@@ -27,6 +27,7 @@ resource "google_project" "this" {
   billing_account     = var.billing_id
   folder_id           = "folders/${var.folder_id}"
   auto_create_network = false
+
   labels = {
     cost-center = var.cost_center
   }
@@ -37,6 +38,7 @@ resource "google_project" "this" {
 
 resource "google_compute_project_metadata" "this" {
   project = google_project.this.project_id
+
   metadata = {
     enable-oslogin = true
   }
@@ -54,10 +56,9 @@ resource "google_storage_bucket" "cis_gcp_2_2" {
 # https://www.terraform.io/docs/providers/google/r/logging_project_sink.html
 
 resource "google_logging_project_sink" "cis_gcp_2_2_logging" {
-  name        = "cis-gcp-2.2-logging-sink"
-  project     = google_project.this.project_id
-  destination = "storage.googleapis.com/${google_storage_bucket.cis_gcp_2_2.name}"
-
+  name                   = "cis-gcp-2.2-logging-sink"
+  project                = google_project.this.project_id
+  destination            = "storage.googleapis.com/${google_storage_bucket.cis_gcp_2_2.name}"
   unique_writer_identity = true
 }
 
