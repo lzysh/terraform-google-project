@@ -17,7 +17,7 @@ suites:
     driver:
       root_module_directory: test/fixtures/default-project
     verifier:
-      color: false
+      color: true
       systems:
         - name: inspec-gcp-cis-benchmark
           backend: gcp
