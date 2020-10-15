@@ -64,7 +64,9 @@ resource "google_kms_key_ring" "this" {
   project  = google_project.this.project_id
   location = "us-east4"
 
-  depends_on = [google_project_service.this]
+  depends_on = [
+    google_project_service.this,
+  ]
 }
 
 # KMS CryptoKey Resource
@@ -97,6 +99,11 @@ resource "google_storage_bucket" "cis_gcp_2_2" {
   encryption {
     default_kms_key_name = google_kms_crypto_key.cis_gcp_2_2.id
   }
+
+  depends_on = [
+    google_kms_crypto_key_iam_member.cis_gcp_2_2,
+  ]
+
 }
 
 # Project Logging Sink Resource

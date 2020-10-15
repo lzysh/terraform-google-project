@@ -45,6 +45,10 @@ jobs:
         with:
           api-key: ${{ secrets.BRIDGECREW_API_KEY }}
 
+      - name: Run Checkov
+        run: |
+          checkov -d .
+
       # Kitchen Tests
       # https://github.com/newcontext-oss/kitchen-terraform
       
