@@ -43,7 +43,7 @@ jobs:
         id: bridgecrew
         uses: bridgecrewio/bridgecrew-action@v1.177.2
         with:
-          api-key: ${{ secrets.BRIDGECREW_API_KEY }
+          api-key: ${{ secrets.BRIDGECREW_API_KEY }}
 
       # Kitchen Tests
       # https://github.com/newcontext-oss/kitchen-terraform
