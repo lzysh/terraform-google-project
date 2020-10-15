@@ -36,6 +36,15 @@ jobs:
           service_account_key: ${{ secrets.GCP_TF_CHILD_MODULE_GITHUB_SA_KEY }}
           export_default_credentials: true
 
+      # Bridgecrew
+      # https://github.com/marketplace/actions/bridgecrew-github-action
+
+      - name: Run Bridgecrew 
+        id: bridgecrew
+        uses: bridgecrewio/bridgecrew-action@v1.177.2
+        with:
+          api-key: ${{ secrets.BRIDGECREW_API_KEY }
+
       # Kitchen Tests
       # https://github.com/newcontext-oss/kitchen-terraform
       
