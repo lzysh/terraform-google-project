@@ -11,7 +11,6 @@ jobs:
     name: "Default Project"
     runs-on: [self-hosted, kitchen]
     env:
-      RUBYOPT: "-W:no-deprecated -W:no-experimental"
       BILLING_ID: ${{ secrets.BILLING_ID }}
 
     # Use the Bash shell
@@ -37,13 +36,6 @@ jobs:
           export_default_credentials: true
 
       # Bridgecrew
-      # https://github.com/marketplace/actions/bridgecrew-github-action
-
-      - name: Run Bridgecrew 
-        id: bridgecrew
-        uses: bridgecrewio/bridgecrew-action@master
-        with:
-          api-key: ${{ secrets.BRIDGECREW_API_KEY }}
 
       - name: Run Checkov
         run: |
