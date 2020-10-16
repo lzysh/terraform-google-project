@@ -85,6 +85,11 @@ resource "google_kms_crypto_key_iam_member" "cis_gcp_2_2" {
   crypto_key_id = google_kms_crypto_key.cis_gcp_2_2.id
   role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
   member        = "serviceAccount:service-${google_project.this.number}@gs-project-accounts.iam.gserviceaccount.com"
+
+  depends_on = [
+    google_project_service.this,
+  ]
+
 }
 
 # Storage Bucket Resource
