@@ -38,6 +38,7 @@ variable "services" {
 
   default = [
     "cloudkms.googleapis.com",
+    "storage.googleapis.com",
   ]
 }
 
