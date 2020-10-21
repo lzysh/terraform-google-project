@@ -121,6 +121,9 @@ resource "google_logging_project_sink" "cis_gcp_2_2_logging" {
   unique_writer_identity = true
 }
 
+# IAM Binding Resource
+# https://www.terraform.io/docs/providers/google/r/google_project_iam.html
+
 resource "google_project_iam_binding" "cis_gcp_2_2_log_writer" {
   project = google_project.this.project_id
   role    = "roles/storage.objectCreator"
