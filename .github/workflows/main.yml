@@ -44,6 +44,15 @@ jobs:
       # Kitchen Tests
       # https://github.com/newcontext-oss/kitchen-terraform
       
-      - name: Run Kitchen Tests
+      - name: Run Kitchen Converge
         run: |
-          bundle exec kitchen test
+          bundle exec kitchen converge
+
+      - name: Run Kitchen Verify
+        run: |
+          bundle exec kitchen verify
+
+      - name: Run Kitchen Destroy
+        run: |
+          bundle exec kitchen destroy
+     
