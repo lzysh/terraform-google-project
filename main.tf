@@ -64,7 +64,9 @@ resource "google_kms_key_ring" "this" {
   project  = google_project.this.project_id
   location = "us-east4"
 
-  depends_on = [google_project_service.this]
+  depends_on = [
+    google_project_service.this,
+  ]
 }
 
 # KMS CryptoKey Resource
@@ -83,6 +85,11 @@ resource "google_kms_crypto_key_iam_member" "cis_gcp_2_2" {
   crypto_key_id = google_kms_crypto_key.cis_gcp_2_2.id
   role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
   member        = "serviceAccount:service-${google_project.this.number}@gs-project-accounts.iam.gserviceaccount.com"
+
+  depends_on = [
+    google_project_service.this,
+  ]
+
 }
 
 # Storage Bucket Resource
@@ -97,6 +104,11 @@ resource "google_storage_bucket" "cis_gcp_2_2" {
   encryption {
     default_kms_key_name = google_kms_crypto_key.cis_gcp_2_2.id
   }
+
+  depends_on = [
+    google_kms_crypto_key_iam_member.cis_gcp_2_2,
+  ]
+
 }
 
 # Project Logging Sink Resource
@@ -108,6 +120,9 @@ resource "google_logging_project_sink" "cis_gcp_2_2_logging" {
   destination            = "storage.googleapis.com/${google_storage_bucket.cis_gcp_2_2.name}"
   unique_writer_identity = true
 }
+
+# IAM Binding Resource
+# https://www.terraform.io/docs/providers/google/r/google_project_iam.html
 
 resource "google_project_iam_binding" "cis_gcp_2_2_log_writer" {
   project = google_project.this.project_id
